@@ -10,13 +10,13 @@
         href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
   <meta name="language" content="es-ES">
 
-  <!-- CSS externo -->
+  <!-- Tu CSS externo -->
   <link rel="stylesheet"
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-  <!-- Overrides y estilos de overlay de rotación y control de texto en móvil -->
+  <!-- Overrides y estilos de overlay de rotación -->
   <style>
-    /* Ocultar mensaje de error de compatibilidad */
+    /* Oculta el mensaje de navegador no compatible */
     #error {
       display: none !important;
     }
@@ -41,7 +41,27 @@
       color: #333;
     }
 
-    /* Contenedor principal */
+    /* Sólo en móvil portrait mostramos el overlay y ocultamos todo lo demás */
+    @media (max-width: 600px) and (orientation: portrait) {
+      #rotateOverlay {
+        display: flex !important;
+      }
+      body > *:not(#rotateOverlay) {
+        visibility: hidden !important;
+      }
+    }
+
+    /* En cualquier pantalla landscape ocultamos el overlay y mostramos el contenido */
+    @media (orientation: landscape) {
+      #rotateOverlay {
+        display: none !important;
+      }
+      #main {
+        visibility: visible !important;
+      }
+    }
+
+    /* Contenedor fluido */
     #wrap {
       position: relative !important;
       width: 100% !important;
@@ -55,46 +75,15 @@
       width: 100% !important;
       height: auto !important;
       display: block !important;
+      /* En móvil limitamos la altura para no tener que scroll vertical */
+      max-height: 70vh !important;
     }
 
-    /* Portrait en móvil: mostrar overlay y ocultar todo lo demás */
-    @media (max-width: 600px) and (orientation: portrait) {
-      #rotateOverlay {
-        display: flex !important;
-      }
-      body > *:not(#rotateOverlay) {
-        visibility: hidden !important;
-      }
-    }
-
-    /* Landscape en móvil: ocultar overlay */
-    @media (max-width: 600px) and (orientation: landscape) {
-      #rotateOverlay {
-        display: none !important;
-      }
-    }
-
-    /* En móvil landscape, ocultar estático #text hasta que se active con clic */
-    @media (max-width: 600px) and (orientation: landscape) {
-      #wrap:not(.active) #text {
-        display: none !important;
-      }
-    }
-    /* Cuando .active, mostrar texto en móvil */
-    @media (max-width: 600px) {
-      #wrap.active #text {
-        display: block !important;
-      }
-    }
-
-    /* Ajustes específicos para pantallas pequeñas */
+    /* Ajustes de tipografía en móvil */
     @media (max-width: 600px) {
       #code {
         font-size: 0.9em !important;
         line-height: 1.3 !important;
-      }
-      canvas {
-        max-height: 70vh !important;
       }
     }
   </style>
@@ -114,12 +103,10 @@
 </head>
 
 <body>
-  <!-- Overlay que indica rotar el móvil (sólo en móvil portrait) -->
+  <!-- Overlay de rotación (se muestra sólo en portrait móvil) -->
   <div id="rotateOverlay">
-    <div id="rotateMessage">
-      <p>📱</p>
-      <p>Para una mejor experiencia, por favor gira tu dispositivo <strong>horizontalmente</strong>.</p>
-    </div>
+    <p>📱</p>
+    <p>Para una mejor experiencia, gira tu dispositivo <strong>horizontalmente</strong>.</p>
   </div>
 
   <!-- Contenido principal -->
@@ -127,56 +114,43 @@
     <div id="wrap">
       <div id="text">
         <div id="code" style="font-size: 0.75em; line-height: 1.2;">
-          <span class="say">En este Día de la Madre queremos rendir homenaje a esas
-            mujeres extraordinarias que, con su uniforme azul y su corazón,
-            transforman el cuidado en un acto de amor infinito.</span><br><br>
-          <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes
-            en las noches más largas y, al volver a casa, arrullas a tus hijos con
-            la misma ternura con que tomas sus manos.</span><br>
-          <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos
-            agotadores, secas lágrimas, das consuelo y, al mismo tiempo,
-            cocinas sueños para tu familia.</span><br>
-          <span class="say">Eres la voz que susurra “todo estará bien” en un
-            pasillo de hospital y el abrazo que cobija a quienes te esperan al
-            llegar.</span><br>
-          <span class="say">Gracias por regalarnos cada latido de tu entrega y
-            enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
-          <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita
-            capacidad de amar.</span><br>
+          <span class="say">En este Día de la Madre queremos rendir homenaje a esas mujeres extraordinarias que, con su uniforme azul y su corazón, transforman el cuidado en un acto de amor infinito.</span><br><br>
+          <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes en las noches más largas y, al volver a casa, arrullas a tus hijos con la misma ternura con que tomas sus manos.</span><br>
+          <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos agotadores, secas lágrimas, das consuelo y, al mismo tiempo, cocinas sueños para tu familia.</span><br>
+          <span class="say">Eres la voz que susurra "todo estará bien" en un pasillo de hospital y el abrazo que cobija a quienes te esperan al llegar.</span><br>
+          <span class="say">Gracias por regalarnos cada latido de tu entrega y enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
+          <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita capacidad de amar.</span><br>
           <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
           <span class="say">  — ¡Te amamos!</span><br><br>
-          <span class="say" style="font-size: 1.2em; font-weight: bold;">
-            ASENF OVALLE
-          </span><br>
-          <span class="say" style="font-size: 0.8em; font-style: italic;">
-            Programación y diseño: Enf. Yohnnier Gomez
-          </span>
+          <span class="say" style="font-size: 1.2em; font-weight: bold;">ASENF OVALLE</span><br>
+          <span class="say" style="font-size: 0.8em; font-style: italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
         </div>
       </div>
-      <!-- Canvas responsivo con altura limitada en móvil -->
       <canvas id="canvas" width="1100" height="680"></canvas>
     </div>
   </div>
 
-  <!-- Audio y script de reproducción + activación de texto en móvil -->
   <audio preload="auto" id="media"
          src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3"
          loop></audio>
+
   <script>
+    // Reproducción de audio tras la carga
     document.addEventListener('DOMContentLoaded', function () {
-      var audio = document.getElementById('media');
       setTimeout(function () {
-        audio.play().catch(function (error) {
-          console.log("Reproducción automática bloqueada:", error);
+        var audio = document.getElementById('media');
+        audio.play().catch(function (err) {
+          console.log("Autoplay bloqueado:", err);
           audio.controls = true;
         });
       }, 2000);
+    });
 
-      // En móvil landscape, revelamos el texto sólo tras hacer clic en el canvas
-      var canvas = document.getElementById('canvas');
-      canvas.addEventListener('click', function () {
-        document.getElementById('wrap').classList.add('active');
-      });
+    // Al girar a landscape en móvil, recarga la página para reiniciar la animación
+    window.addEventListener('orientationchange', function () {
+      if (window.matchMedia("(max-width: 600px) and (orientation: landscape)").matches) {
+        location.reload();
+      }
     });
   </script>
 </body>
