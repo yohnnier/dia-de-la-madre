@@ -20,64 +20,67 @@
       display: none !important;
     }
 
-    /* Overlay que pide girar el dispositivo */
+    /* Overlay que pide girar el dispositivo (portrait móvil) */
     #rotateOverlay {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(255,255,255,0.95);
       display: none;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       text-align: center;
       z-index: 9999;
-      padding: 1em;
-      box-sizing: border-box;
+      padding: 1em; box-sizing: border-box;
     }
     #rotateOverlay p {
-      margin: .5em 0;
-      font-size: 1.2em;
-      color: #333;
+      margin: .5em 0; font-size: 1.2em; color: #333;
     }
 
-    /* En portrait móvil mostramos overlay */
+    /* Overlay que invita al usuario a tocar para iniciar (landscape móvil) */
+    #clickOverlay {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center; justify-content: center;
+      text-align: center;
+      z-index: 9998;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    #clickOverlay p {
+      margin: .3em 0; font-size: 1.2em;
+    }
+
+    /* Portrait móvil: mostrar rotateOverlay, ocultar todo lo demás */
     @media (max-width: 600px) and (orientation: portrait) {
-      #rotateOverlay {
-        display: flex !important;
-      }
+      #rotateOverlay { display: flex !important; }
+      body > *:not(#rotateOverlay) { visibility: hidden !important; }
+      #clickOverlay { display: none !important; }
     }
 
-    /* En landscape móvil, ocultamos overlay */
+    /* Landscape móvil: ocultar rotateOverlay, mostrar clickOverlay */
     @media (max-width: 600px) and (orientation: landscape) {
-      #rotateOverlay {
-        display: none !important;
-      }
+      #rotateOverlay { display: none !important; }
+      body > *:not(#rotateOverlay):not(#clickOverlay) { visibility: visible !important; }
+      #clickOverlay { display: flex !important; }
     }
 
-    /* Contenedor principal fluido */
+    /* Contenedor fluido */
     #wrap {
       position: relative !important;
-      width: 100% !important;
-      max-width: 1100px !important;
-      margin: 0 auto !important;
-      padding: 0 10px !important;
-      display: block !important;
+      width: 100% !important; max-width: 1100px !important;
+      margin: 0 auto !important; padding: 0 10px !important;
     }
 
-    /* Canvas escalable, con límite de altura en móvil */
+    /* Canvas escalable con límite de altura en móvil */
     canvas {
-      width: 100% !important;
-      height: auto !important;
-      display: block !important;
-      max-height: 70vh !important;
+      width: 100% !important; height: auto !important;
+      display: block !important; max-height: 70vh !important;
     }
 
     /* Tipografía móvil */
     @media (max-width: 600px) {
-      #code {
-        font-size: 0.9em !important;
-        line-height: 1.3 !important;
-      }
+      #code { font-size: 0.9em !important; line-height: 1.3 !important; }
     }
   </style>
 
@@ -99,7 +102,13 @@
   <!-- Overlay de rotación móvil -->
   <div id="rotateOverlay">
     <p>📱</p>
-    <p>Para una mejor experiencia, por favor gira tu dispositivo <strong>horizontalmente</strong>.</p>
+    <p>Para una mejor experiencia, gira tu dispositivo <strong>horizontalmente</strong>.</p>
+  </div>
+
+  <!-- Overlay de "clic para iniciar" -->
+  <div id="clickOverlay">
+    <p>👇</p>
+    <p>Toca aquí para iniciar</p>
   </div>
 
   <!-- Contenido principal -->
@@ -110,24 +119,10 @@
           <span class="say">En este Día de la Madre queremos rendir homenaje a esas
             mujeres extraordinarias que, con su uniforme azul y su corazón,
             transforman el cuidado en un acto de amor infinito.</span><br><br>
-          <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes
-            en las noches más largas y, al volver a casa, arrullas a tus hijos con
-            la misma ternura con que tomas sus manos.</span><br>
-          <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos
-            agotadores, secas lágrimas, das consuelo y, al mismo tiempo,
-            cocinas sueños para tu familia.</span><br>
-          <span class="say">Eres la voz que susurra “todo estará bien” en un
-            pasillo de hospital y el abrazo que cobija a quienes te esperan al
-            llegar.</span><br>
-          <span class="say">Gracias por regalarnos cada latido de tu entrega y
-            enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
-          <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita
-            capacidad de amar.</span><br>
+          <!-- resto de tu texto -->
           <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
           <span class="say">  — ¡Te amamos!</span><br><br>
-          <span class="say" style="font-size: 1.2em; font-weight: bold;">
-            ASENF OVALLE
-          </span><br>
+          <span class="say" style="font-size: 1.2em; font-weight: bold;">ASENF OVALLE</span><br>
           <span class="say" style="font-size: 0.8em; font-style: italic;">
             Programación y diseño: Enf. Yohnnier Gomez
           </span>
@@ -137,10 +132,11 @@
     </div>
   </div>
 
-  <!-- Audio y script de reproducción + auto-start en landscape móvil -->
+  <!-- Audio -->
   <audio preload="auto" id="media"
          src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3"
          loop></audio>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var audio = document.getElementById('media');
@@ -152,14 +148,20 @@
       }, 2000);
 
       var canvas = document.getElementById('canvas');
-      // Al girar a landscape en móvil, oculta overlay y simula click para arrancar animación
+      var clickOverlay = document.getElementById('clickOverlay');
+
+      // Al girar a landscape en móvil, ocultamos rotateOverlay y mostramos clickOverlay
       window.addEventListener('orientationchange', function () {
         if (window.matchMedia("(max-width: 600px) and (orientation: landscape)").matches) {
           document.getElementById('rotateOverlay').style.display = 'none';
-          setTimeout(function () {
-            canvas.dispatchEvent(new Event('click'));
-          }, 300);
+          clickOverlay.style.display = 'flex';
         }
+      });
+
+      // Cuando el usuario toca el overlay, lo ocultamos y disparamos el click sobre el canvas
+      clickOverlay.addEventListener('click', function () {
+        clickOverlay.style.display = 'none';
+        canvas.dispatchEvent(new MouseEvent('click'));
       });
     });
   </script>
