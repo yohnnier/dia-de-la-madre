@@ -15,75 +15,47 @@
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
   <style>
-    /* Oculta mensaje de navegador no compatible */
-    #error {
-      display: none !important;
-    }
+    /* Basicos */
+    #error { display: none !important; }
+    #wrap { position: relative; width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 10px; }
 
-    /* Overlay que pide girar el dispositivo (portrait móvil) */
-    #rotateOverlay {
-      position: fixed; top: 0; left: 0;
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      max-height: 70vh !important;
+    }
+    #code { line-height: 1.2; }
+
+    /* Overlays */
+    #rotateOverlay, #clickOverlay {
+      position: fixed;
+      top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: rgba(255,255,255,0.95);
       display: none;
-      align-items: center; justify-content: center;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       z-index: 9999;
-      padding: 1em; box-sizing: border-box;
+      padding: 1em;
+      box-sizing: border-box;
     }
-    #rotateOverlay p {
-      margin: .5em 0; font-size: 1.2em; color: #333;
+    #rotateOverlay {
+      background: rgba(255,255,255,0.95);
     }
-
-    /* Overlay que invita al usuario a tocar para iniciar (landscape móvil) */
     #clickOverlay {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.7); /* Oscurecido para mejor visibilidad */
-      display: none;
-      align-items: center; justify-content: center;
-      text-align: center;
-      z-index: 9998;
+      background: rgba(0,0,0,0.5);
       color: #fff;
       font-family: sans-serif;
-      cursor: pointer; /* Indica que es clickeable */
     }
-    #clickOverlay p {
-      margin: .3em 0; font-size: 1.5em; /* Texto más grande */
-    }
-    #clickOverlay div {
-      background: rgba(255,255,255,0.2);
-      padding: 20px; border-radius: 10px;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    #rotateOverlay p, #clickOverlay p {
+      margin: .5em 0;
+      font-size: 1.2em;
     }
 
-    /* Portrait móvil: mostrar rotateOverlay */
-    @media (max-width: 600px) and (orientation: portrait) {
-      #rotateOverlay { display: flex; }
-      #clickOverlay { display: none; }
-    }
-
-    /* Contenedor fluido */
-    #wrap {
-      position: relative !important;
-      width: 100% !important; max-width: 1100px !important;
-      margin: 0 auto !important; padding: 0 10px !important;
-    }
-
-    /* Canvas escalable con límite de altura en móvil */
-    canvas {
-      width: 100% !important; height: auto !important;
-      display: block !important; max-height: 70vh !important;
-    }
-
-    /* Tipografía móvil */
+    /* Ajustes tipográficos en móvil */
     @media (max-width: 600px) {
-      #code { font-size: 0.9em !important; line-height: 1.3 !important; }
+      #code { font-size: 0.9em !important; }
     }
   </style>
 
@@ -102,37 +74,33 @@
 </head>
 
 <body>
-  <!-- Overlay de rotación móvil -->
+  <!-- Overlay girar -->
   <div id="rotateOverlay">
-    <div>
-      <p>📱</p>
-      <p>Para una mejor experiencia, gira tu dispositivo <strong>horizontalmente</strong>.</p>
-    </div>
+    <p>📱</p>
+    <p>Gira tu dispositivo horizontalmente para continuar</p>
   </div>
 
-  <!-- Overlay de "clic para iniciar" -->
+  <!-- Overlay clic para iniciar -->
   <div id="clickOverlay">
-    <div>
-      <p>👆</p>
-      <p>Toca aquí para iniciar</p>
-    </div>
+    <p>👇</p>
+    <p>Toca aquí para iniciar</p>
   </div>
 
   <!-- Contenido principal -->
   <div id="main">
     <div id="wrap">
       <div id="text">
-        <div id="code" style="font-size: 0.75em; line-height: 1.2;">
-          <span class="say">En este Día de la Madre queremos rendir homenaje a esas
-            mujeres extraordinarias que, con su uniforme azul y su corazón,
-            transforman el cuidado en un acto de amor infinito.</span><br><br>
-          <!-- resto de tu texto -->
+        <div id="code" style="font-size: 0.75em;">
+          <span class="say">En este Día de la Madre queremos rendir homenaje a esas mujeres extraordinarias que, con su uniforme azul y su corazón, transforman el cuidado en un acto de amor infinito.</span><br><br>
+          <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes en las noches más largas y, al volver a casa, arrullas a tus hijos con la misma ternura con que tomas sus manos.</span><br>
+          <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos agotadores, secas lágrimas, das consuelo y, al mismo tiempo, cocinas sueños para tu familia.</span><br>
+          <span class="say">Eres la voz que susurra "todo estará bien" en un pasillo de hospital y el abrazo que cobija a quienes te esperan al llegar.</span><br>
+          <span class="say">Gracias por regalarnos cada latido de tu entrega y enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
+          <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita capacidad de amar.</span><br>
           <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
-          <span class="say">  — ¡Te amamos!</span><br><br>
-          <span class="say" style="font-size: 1.2em; font-weight: bold;">ASENF OVALLE</span><br>
-          <span class="say" style="font-size: 0.8em; font-style: italic;">
-            Programación y diseño: Enf. Yohnnier Gomez
-          </span>
+          <span class="say">— ¡Te amamos!</span><br><br>
+          <span class="say" style="font-size:1.2em; font-weight:bold;">ASENF OVALLE</span><br>
+          <span class="say" style="font-size:0.8em; font-style:italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
         </div>
       </div>
       <canvas id="canvas" width="1100" height="680"></canvas>
@@ -145,144 +113,57 @@
          loop></audio>
 
   <script>
-    // Variables globales
-    var audio, canvas, clickOverlay, rotateOverlay;
-    var animationStarted = false;
-    
-    // Función que determina si estamos en móvil
-    function isMobile() {
-      return window.matchMedia("(max-width: 600px)").matches;
-    }
-    
-    // Función que determina si estamos en orientación landscape
-    function isLandscape() {
-      return window.matchMedia("(orientation: landscape)").matches;
-    }
-    
-    // Función para comprobar y actualizar los overlays según la orientación
     function updateOverlays() {
-      // Solo hacer esto para dispositivos móviles
-      if (isMobile()) {
-        if (isLandscape()) {
-          // En landscape móvil
-          rotateOverlay.style.display = "none";
-          
-          // Solo mostrar clickOverlay si la animación no ha comenzado
-          if (!animationStarted) {
-            clickOverlay.style.display = "flex";
-          } else {
-            clickOverlay.style.display = "none";
-          }
+      const isMobile = window.innerWidth <= 600;
+      const isLandscape = window.innerWidth > window.innerHeight;
+      const rotateO = document.getElementById('rotateOverlay');
+      const clickO  = document.getElementById('clickOverlay');
+      const mainC   = document.getElementById('main');
+      const text    = document.getElementById('text');
+
+      if (isMobile) {
+        if (isLandscape) {
+          rotateO.style.display = 'none';
+          clickO.style.display  = 'flex';
+          mainC.style.visibility = 'visible';
+          text.style.display     = 'none';
         } else {
-          // En portrait móvil
-          rotateOverlay.style.display = "flex";
-          clickOverlay.style.display = "none";
+          rotateO.style.display = 'flex';
+          clickO.style.display  = 'none';
+          mainC.style.visibility = 'hidden';
         }
       } else {
-        // En escritorio, ocultar ambos overlays
-        rotateOverlay.style.display = "none";
-        clickOverlay.style.display = "none";
+        rotateO.style.display = 'none';
+        clickO.style.display  = 'none';
+        mainC.style.visibility = 'visible';
       }
     }
-    
-    // Iniciar reproducción de audio de manera forzada (requiere interacción del usuario)
-    function playAudio() {
-      if (audio && audio.paused) {
-        audio.play().catch(function(err) {
-          console.log("Reproducción de audio fallida:", err);
-          // Si falla el autoplay, mostrar controles como fallback
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio     = document.getElementById('media');
+      const canvas    = document.getElementById('canvas');
+      const clickO    = document.getElementById('clickOverlay');
+
+      // Reproducir audio
+      setTimeout(() => {
+        audio.play().catch(err => {
+          console.log("Autoplay bloqueado:", err);
           audio.controls = true;
         });
-      }
-    }
-    
-    // Función para iniciar la animación
-    function startAnimation() {
-      animationStarted = true;
-      
-      // Asegurarse de que el canvas sea visible
-      if (canvas) {
-        canvas.style.visibility = "visible";
-        
-        // Disparar evento de clic en el canvas para iniciar la animación
-        // Este es un evento simulado para activar cualquier listener en el canvas
-        var clickEvent = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        canvas.dispatchEvent(clickEvent);
-        
-        // También intenta llamar a cualquier función de inicio directamente
-        // (en caso de que el script no use event listeners)
-        if (typeof startHeartAnimation === 'function') {
-          startHeartAnimation();
-        }
-        
-        // Intenta iniciar el audio
-        playAudio();
-        
-        // Ocultar el overlay de clic una vez iniciada la animación
-        if (clickOverlay) {
-          clickOverlay.style.display = "none";
-        }
-      }
-    }
-    
-    // Función principal que se ejecuta cuando el DOM está listo
-    document.addEventListener('DOMContentLoaded', function() {
-      // Inicializar referencias
-      audio = document.getElementById('media');
-      canvas = document.getElementById('canvas');
-      clickOverlay = document.getElementById('clickOverlay');
-      rotateOverlay = document.getElementById('rotateOverlay');
-      
-      // Asegurarse de que el canvas sea visible
-      if (canvas) {
-        canvas.style.visibility = "visible";
-      }
-      
-      // Verificar orientación al cargar
+      }, 2000);
+
+      // Mostrar overlays según orientación
       updateOverlays();
-      
-      // Escuchar cambios de orientación
-      window.addEventListener('orientationchange', function() {
-        // Pequeño retraso para asegurarnos de que el cambio de orientación se complete
-        setTimeout(updateOverlays, 500);
-      });
-      
-      // También escuchar cambios de tamaño de ventana
       window.addEventListener('resize', updateOverlays);
-      
-      // Manejar clic en el overlay
-      if (clickOverlay) {
-        clickOverlay.addEventListener('click', function() {
-          startAnimation();
-        });
-      }
-      
-      // Intentar reproducir el audio automáticamente después de un tiempo
-      setTimeout(playAudio, 2000);
-      
-      // Hack adicional para asegurarnos de que después de 1 segundo verificamos 
-      // si estamos en landscape y mostramos el overlay si es necesario
-      setTimeout(function() {
-        if (isMobile() && isLandscape() && !animationStarted) {
-          clickOverlay.style.display = "flex";
-        }
-      }, 1000);
-    });
-    
-    // Hack para garantizar que el overlay aparezca en landscape móvil incluso si la página ya está cargada
-    window.addEventListener('load', function() {
-      if (typeof isMobile === 'function' && typeof isLandscape === 'function') {
-        if (isMobile() && isLandscape()) {
-          var clickOverlay = document.getElementById('clickOverlay');
-          if (clickOverlay && !animationStarted) {
-            clickOverlay.style.display = "flex";
-          }
-        }
-      }
+      window.addEventListener('orientationchange', updateOverlays);
+
+      // Al tocar clickOverlay, iniciar animación
+      clickO.addEventListener('click', () => {
+        clickO.style.display = 'none';
+        // revelar texto y disparar click en canvas
+        document.getElementById('text').style.display = 'block';
+        canvas.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      });
     });
   </script>
 </body>
