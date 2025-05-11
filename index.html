@@ -14,7 +14,7 @@
   <link rel="stylesheet"
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-  <!-- Overrides y estilos de overlay de rotación -->
+  <!-- Overrides y estilos de overlay de rotación y control de texto en móvil -->
   <style>
     /* Ocultar mensaje de error de compatibilidad */
     #error {
@@ -48,16 +48,6 @@
       max-width: 1100px !important;
       margin: 0 auto !important;
       padding: 0 10px !important;
-      display: block !important;
-    }
-
-    /* Sólo en desktop forzamos el texto visible (no rompe animaciones en móvil) */
-    @media (min-width: 601px) {
-      #text, #code {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
     }
 
     /* Canvas escalable */
@@ -67,22 +57,33 @@
       display: block !important;
     }
 
-    /* Sólo en móvil portrait: mostrar overlay y ocultar contenido */
+    /* Portrait en móvil: mostrar overlay y ocultar todo lo demás */
     @media (max-width: 600px) and (orientation: portrait) {
       #rotateOverlay {
         display: flex !important;
       }
-      #main {
+      body > *:not(#rotateOverlay) {
         visibility: hidden !important;
       }
     }
-    /* Sólo en móvil landscape: ocultar overlay y mostrar contenido */
+
+    /* Landscape en móvil: ocultar overlay */
     @media (max-width: 600px) and (orientation: landscape) {
       #rotateOverlay {
         display: none !important;
       }
-      #main {
-        visibility: visible !important;
+    }
+
+    /* En móvil landscape, ocultar estático #text hasta que se active con clic */
+    @media (max-width: 600px) and (orientation: landscape) {
+      #wrap:not(.active) #text {
+        display: none !important;
+      }
+    }
+    /* Cuando .active, mostrar texto en móvil */
+    @media (max-width: 600px) {
+      #wrap.active #text {
+        display: block !important;
       }
     }
 
@@ -152,25 +153,30 @@
           </span>
         </div>
       </div>
-      <!-- Canvas responsivo con altura limitada -->
+      <!-- Canvas responsivo con altura limitada en móvil -->
       <canvas id="canvas" width="1100" height="680"></canvas>
     </div>
   </div>
 
-  <!-- Audio y script de reproducción -->
+  <!-- Audio y script de reproducción + activación de texto en móvil -->
   <audio preload="auto" id="media"
          src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3"
          loop></audio>
-  <script src="https://cdn1.site-media.eu/images/0/16133660/script-4FFlAvQJ79P1MYTvraJpeg.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      var audio = document.getElementById('media');
       setTimeout(function () {
-        var audio = document.getElementById('media');
         audio.play().catch(function (error) {
           console.log("Reproducción automática bloqueada:", error);
           audio.controls = true;
         });
       }, 2000);
+
+      // En móvil landscape, revelamos el texto sólo tras hacer clic en el canvas
+      var canvas = document.getElementById('canvas');
+      canvas.addEventListener('click', function () {
+        document.getElementById('wrap').classList.add('active');
+      });
     });
   </script>
 </body>
