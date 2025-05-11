@@ -1,188 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love You by AlexDev</title>
-    <link rel="icon" type="image/x-icon" href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
-    <meta name="language" content="es-ES">
-    <meta name="title" content="title">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love You by AlexDev</title>
+  <link rel="icon" type="image/x-icon" href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
+  <meta name="language" content="es-ES">
 
-    <!-- CSS externo -->
-    <link rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-    <!-- Estilos simplificados pero efectivos -->
-    <style>
-      body, html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow-x: hidden;
-      }
+  <!-- Estilos responsive y overlays -->
+  <style>
+    html, body { margin:0; padding:0; height:100%; }
+    body { display:flex; flex-direction:column; }
+    #main { flex:1; display:flex; flex-direction:column; }
+    #wrap { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; max-width:1100px; margin:auto; padding:0 10px; box-sizing:border-box; }
+    #text { flex:0 0 auto; width:100%; text-align:center; }
+    #code { font-size:0.75em; line-height:1.2; }
+    canvas { flex:1 1 auto; box-sizing:border-box; }
 
-      #main {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
+    /* Overlay rotación (portrait móvil) */
+    #rotateOverlay {
+      position:fixed; top:0; left:0; width:100vw; height:100vh;
+      background:rgba(255,255,255,0.95); display:none;
+      align-items:center; justify-content:center; text-align:center;
+      z-index:1000; padding:1em; box-sizing:border-box; font-family:sans-serif;
+    }
+    /* Overlay clic (landscape móvil) */
+    #clickOverlay {
+      position:fixed; top:0; left:0; width:100vw; height:100vh;
+      background:rgba(0,0,0,0.6); display:none;
+      align-items:center; justify-content:center; flex-direction:column;
+      text-align:center; z-index:1000; color:#fff; font-family:sans-serif;
+    }
+    #rotateOverlay p, #clickOverlay p { margin:0.5em 0; font-size:1.2em; }
 
-      #wrap {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-        position: relative;
-      }
+    /* Mobile portrait */
+    @media(max-width:600px) and (orientation:portrait) {
+      #rotateOverlay { display:flex !important; }
+      #clickOverlay { display:none !important; }
+      #main { visibility:hidden !important; }
+    }
+    /* Mobile landscape */
+    @media(max-width:600px) and (orientation:landscape) {
+      #rotateOverlay { display:none !important; }
+      #clickOverlay { display:flex !important; }
+      #main { visibility:visible !important; }
+    }
+    /* Desktop */
+    @media(min-width:601px) {
+      #rotateOverlay, #clickOverlay { display:none !important; }
+      #main { visibility:visible !important; }
+    }
 
-      canvas {
-        width: 100% !important;
-        height: auto !important;
-        max-height: 100vh;
-        display: block;
-      }
+    /* Ajustes tipográficos en móvil */
+    @media(max-width:600px) {
+      #code { font-size:0.9em !important; line-height:1.3 !important; }
+    }
+  </style>
 
-      #text {
-        position: absolute;
-        top: 10%;
-        left: 0;
-        width: 100%;
-        z-index: 10;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-
-      #code {
-        background-color: rgba(255, 255, 255, 0.7);
-        padding: 10px;
-        border-radius: 8px;
-        max-width: 100%;
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      .say {
-        display: block;
-        margin-bottom: 10px;
-      }
-
-      #play-button {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        z-index: 100;
-        background: rgba(255, 255, 255, 0.8);
-        border: none;
-        border-radius: 50px;
-        padding: 10px 15px;
-        cursor: pointer;
-        display: none;
-      }
-
-      /* Ajustes para móviles */
-      @media (max-width: 768px) {
-        #code {
-          font-size: 14px !important;
-          line-height: 1.3 !important;
-        }
-        
-        #text {
-          top: 5%;
-        }
-      }
-
-      @media (max-width: 480px) {
-        #code {
-          font-size: 12px !important;
-          line-height: 1.2 !important;
-          padding: 5px;
-        }
-      }
-    </style>
-
-    <!-- Scripts externos (sin cambios) -->
-    <script src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133675/jscex-jit-8XrVvUaYfxRmka8p22LKdg.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
+  <!-- Scripts externos -->
+  <script src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133675/jscex-jit-8XrVvUaYfxRmka8p22LKdg.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
 </head>
-
 <body>
-    <div id="main">
-        <div id="error">
-            Tu navegador que estás usando no es compatible con el contenido que se va a mostrar. 
-            Por favor, usa Google (<a href="http://www.google.cn/chrome/intl/zh-CN/landing_chrome.html?hl=zh-CN&brand=CHMI">Chrome</a>) 
-            o Firefox (<a href="http://firefox.com.cn/download/">Firefox</a>)~
-        </div>
+  <!-- Overlays -->
+  <div id="rotateOverlay"><p>📱</p><p>Gira tu dispositivo para una mejor experiencia.</p></div>
+  <div id="clickOverlay"><p>👇</p><p>Toca para iniciar</p></div>
 
-        <div id="wrap">
-            <canvas id="canvas" width="1100" height="680"></canvas>
-            <div id="text">
-                <div id="code">
-                    <span class="say">En este Día de la Madre queremos rendir homenaje a esas mujeres extraordinarias que, con su uniforme azul y su corazón, transforman el cuidado en un acto de amor infinito.</span>
-                    <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes en las noches más largas y, al volver a casa, arrullas a tus hijos con la misma ternura con que tomas sus manos.</span>
-                    <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos agotadores, secas lágrimas, das consuelo y, al mismo tiempo, cocinas sueños para tu familia.</span>
-                    <span class="say">Eres la voz que susurra "todo estará bien" en un pasillo de hospital y el abrazo que cobija a quienes te esperan al llegar.</span>
-                    <span class="say">Gracias por regalarnos cada latido de tu entrega y enseñarnos que el verdadero arte de cuidar nace del corazón.</span>
-                    <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita capacidad de amar.</span>
-                    <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span>
-                    <span class="say">  — ¡Te amamos!</span>
-                    <span class="say" style="font-size: 1.2em; font-weight: bold;">ASENF OVALLE</span>
-                    <span class="say" style="font-size: 0.8em; font-style: italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
-                </div>
-            </div>
+  <!-- Contenido principal -->
+  <div id="main">
+    <div id="wrap">
+      <div id="text">
+        <div id="code">
+          <span class="say">En este Día de la Madre queremos rendir homenaje a esas mujeres extraordinarias que, con su uniforme azul y su corazón, transforman el cuidado en un acto de amor infinito.</span><br><br>
+          <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes en las noches más largas y, al volver a casa, arrullas a tus hijos con la misma ternura con que tomas sus manos.</span><br>
+          <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos agotadores, secas lágrimas, das consuelo y, al mismo tiempo, cocinas sueños para tu familia.</span><br>
+          <span class="say">Eres la voz que susurra "todo estará bien" en un pasillo de hospital y el abrazo que cobija a quienes te esperan al llegar.</span><br>
+          <span class="say">Gracias por regalarnos cada latido de tu entrega y enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
+          <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita capacidad de amar.</span><br>
+          <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
+          <span class="say">— ¡Te amamos!</span><br><br>
+          <span class="say" style="font-size:1.2em; font-weight:bold;">ASENF OVALLE</span><br>
+          <span class="say" style="font-size:0.8em; font-style:italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
         </div>
-        <button id="play-button">▶️ Reproducir música</button>
+      </div>
+      <canvas id="canvas"></canvas>
     </div>
+  </div>
 
-    <audio id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop></audio>
-
-    <!-- Script original -->
-    <script src="https://cdn1.site-media.eu/images/0/16133660/script-4FFlAvQJ79P1MYTvraJpeg.js"></script>
-    
-    <!-- Script simplificado -->
-    <script>
+  <audio preload="auto" id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop></audio>
+  <script src="https://cdn1.site-media.eu/images/0/16133660/script-4FFlAvQJ79P1MYTvraJpeg.js"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Gestión simple del audio
-        var audio = document.getElementById('media');
-        var playButton = document.getElementById('play-button');
-        
-        // Intento de reproducción automática
-        audio.play().catch(function() {
-            // Si falla, mostrar botón
-            playButton.style.display = 'block';
-        });
-        
-        // Configurar el botón de reproducción
-        playButton.addEventListener('click', function() {
-            audio.play();
-            playButton.style.display = 'none';
-        });
-        
-        // Función simplificada para ajustar el tamaño del canvas
-        function adjustCanvas() {
-            var canvas = document.getElementById('canvas');
-            var windowWidth = window.innerWidth;
-            
-            // Aplicar estilos directamente
-            if (windowWidth <= 480) {
-                document.getElementById('text').style.top = '2%';
-            }
+      var overlayRotate = document.getElementById('rotateOverlay');
+      var overlayClick = document.getElementById('clickOverlay');
+      var main = document.getElementById('main');
+      var canvas = document.getElementById('canvas');
+      var media = document.getElementById('media');
+
+      // Play audio after delay
+      setTimeout(function() {
+        media.play().catch(function(){ media.controls = true; });
+      }, 2000);
+
+      function updateOverlay() {
+        var isMobile = window.innerWidth <= 600;
+        var isPortrait = window.innerHeight > window.innerWidth;
+        if (isMobile && isPortrait) {
+          overlayRotate.style.display = 'flex';
+          overlayClick.style.display = 'none';
+          main.style.visibility = 'hidden';
+        } else if (isMobile && !isPortrait) {
+          overlayRotate.style.display = 'none';
+          overlayClick.style.display = 'flex';
+          main.style.visibility = 'visible';
+        } else {
+          overlayRotate.style.display = 'none';
+          overlayClick.style.display = 'none';
+          main.style.visibility = 'visible';
         }
-        
-        // Ejecutar ajuste inicial
-        adjustCanvas();
-        
-        // Reajustar en cambio de tamaño o orientación
-        window.addEventListener('resize', adjustCanvas);
-        window.addEventListener('orientationchange', function() {
-            setTimeout(adjustCanvas, 200);
-        });
+      }
+
+      updateOverlay();
+      window.addEventListener('resize', updateOverlay);
+      window.addEventListener('orientationchange', updateOverlay);
+
+      // On click overlay click, hide and trigger canvas click
+      overlayClick.addEventListener('click', function() {
+        overlayClick.style.display = 'none';
+        canvas.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      });
     });
-    </script>
+  </script>
 </body>
 </html>
