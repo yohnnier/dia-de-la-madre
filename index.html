@@ -58,11 +58,12 @@
       #clickOverlay { display: none !important; }
     }
 
-    /* Landscape móvil: ocultar rotateOverlay, mostrar clickOverlay */
+    /* Landscape móvil: ocultar rotateOverlay */
     @media (max-width: 600px) and (orientation: landscape) {
       #rotateOverlay { display: none !important; }
-      body > *:not(#rotateOverlay):not(#clickOverlay) { visibility: visible !important; }
-      #clickOverlay { display: flex !important; }
+      body > *:not(#rotateOverlay) { visibility: visible !important; }
+      /* Quitamos el !important de aquí para permitir que JavaScript lo controle */
+      /* #clickOverlay { display: flex !important; } */
     }
 
     /* Contenedor fluido */
@@ -140,6 +141,42 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var audio = document.getElementById('media');
+      var canvas = document.getElementById('canvas');
+      var clickOverlay = document.getElementById('clickOverlay');
+      var rotateOverlay = document.getElementById('rotateOverlay');
+      
+      // Función para comprobar la orientación y mostrar el overlay adecuado
+      function checkOrientation() {
+        if (window.matchMedia("(max-width: 600px)").matches) {
+          if (window.matchMedia("(orientation: landscape)").matches) {
+            // En móvil landscape, ocultamos rotateOverlay y mostramos clickOverlay
+            rotateOverlay.style.display = 'none';
+            clickOverlay.style.display = 'flex';
+          } else {
+            // En móvil portrait, mostramos rotateOverlay y ocultamos clickOverlay
+            rotateOverlay.style.display = 'flex';
+            clickOverlay.style.display = 'none';
+          }
+        } else {
+          // En dispositivos grandes, ocultamos ambos overlays
+          rotateOverlay.style.display = 'none';
+          clickOverlay.style.display = 'none';
+        }
+      }
+      
+      // Comprobar orientación al cargar la página
+      checkOrientation();
+      
+      // Comprobar orientación cuando cambie
+      window.addEventListener('orientationchange', function() {
+        // Esperar un momento para que el cambio de orientación se complete
+        setTimeout(checkOrientation, 300);
+      });
+      
+      // También escuchar el evento resize por si acaso
+      window.addEventListener('resize', checkOrientation);
+      
+      // Comenzar la reproducción de audio después de un tiempo
       setTimeout(function () {
         audio.play().catch(function (err) {
           console.log("Autoplay bloqueado:", err);
@@ -147,21 +184,25 @@
         });
       }, 2000);
 
-      var canvas = document.getElementById('canvas');
-      var clickOverlay = document.getElementById('clickOverlay');
-
-      // Al girar a landscape en móvil, ocultamos rotateOverlay y mostramos clickOverlay
-      window.addEventListener('orientationchange', function () {
-        if (window.matchMedia("(max-width: 600px) and (orientation: landscape)").matches) {
-          document.getElementById('rotateOverlay').style.display = 'none';
-          clickOverlay.style.display = 'flex';
-        }
-      });
-
-      // Cuando el usuario toca el overlay, lo ocultamos y disparamos el click sobre el canvas
+      // Cuando el usuario toca el overlay de clic, lo ocultamos y disparamos el click sobre el canvas
       clickOverlay.addEventListener('click', function () {
         clickOverlay.style.display = 'none';
-        canvas.dispatchEvent(new MouseEvent('click'));
+        // Asegurarse de que el canvas sea visible
+        canvas.style.visibility = 'visible';
+        // Disparar evento de clic en el canvas para iniciar la animación
+        canvas.dispatchEvent(new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        }));
+        
+        // Reproducir audio si aún no se está reproduciendo
+        if (audio.paused) {
+          audio.play().catch(function(err) {
+            console.log("Reproducción de audio fallida:", err);
+            audio.controls = true;
+          });
+        }
       });
     });
   </script>
