@@ -7,15 +7,6 @@
     <meta name="language" content="es-ES">
     <meta name="title" content="title">
     <link type="text/css" rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
-    <style>
-        /* Baja toda la animación 3 líneas: margin-top ajustado */
-        #wrap { margin-top: 22px; }
-        /* Aumenta tamaño del canvas para iconos y texto de 'click here' */
-        #canvas { transform: scale(1.2); transform-origin: top center; }
-        /* Clases para icono de corazón y texto 'click here' */
-        .icon-heart { width: 64px !important; height: 64px !important; }
-        .click-here { font-size: 2em !important; font-weight: bold !important; }
-    </style>
     <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
     <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
     <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
@@ -29,17 +20,20 @@
 <body>
     <div id="main">
         <div id="error">
-            Tu navegador no es compatible con el contenido. Por favor, usa Chrome o Firefox para verlo correctamente.
+            Tu navegador que estás usando no es compatible con el contenido que se va a mostrar.
+            Por favor, usa Google (<a href="http://www.google.cn/chrome/intl/zh-CN/landing_chrome.html?hl=zh-CN&brand=CHMI">Chrome</a>)
+            o Firefox (<a href="http://firefox.com.cn/download/">Firefox</a>)~
         </div>
 
-        <div id="wrap">
+        <!-- Se incrementa margin-top para bajar la animación 3 líneas -->
+        <div id="wrap" style="margin-top: 44px;">
             <div id="text">
                 <div id="code" style="font-size: 1.3125em; line-height: 1.5;">
                     <span class="say">Hoy celebramos a la mamá enfermera cuyo corazón convierte el cuidado en un acto de amor infinito.</span><br>
                     <span class="say">Gracias por velar a tus pacientes en las noches más largas y, al volver a casa, arrullar a tus hijos con la misma ternura.</span><br>
                     <span class="say">Tu coraje y entrega son un faro de esperanza en dos mundos.</span><br>
                     <span class="say">¡Feliz Día de la Madre, heroína de la vida y la salud!</span><br>
-                    <span class="say">Comparte este enlace con una <span class="click-here">#NurseMom</span>.</span><br>
+                    <span class="say">Comparte este enlace con una #NurseMom.</span><br>
                     <span class="say" style="font-weight: bold;">Te desea ASENF Ovalle</span><br>
                     <span class="say" style="font-style: italic;">Diseño y programación: Yohnnier Gomez</span>
                 </div>
@@ -52,11 +46,12 @@
     <audio preload="auto" id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop="loop"></audio>
     <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133660/script-4FFlAvQJ79P1MYTvraJpeg.js"></script>
     <script>
+    // Script para sincronizar el audio con la animación
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
             var audio = document.getElementById('media');
             audio.play().catch(function(error) {
-                console.log("Reproducción bloqueada: ", error);
+                console.log("Reproducción automática bloqueada: ", error);
                 audio.controls = true;
             });
         }, 2000);
