@@ -14,7 +14,7 @@
   <link rel="stylesheet"
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-  <!-- Overrides y estilos de overlay de rotación -->
+  <!-- Overrides y estilos de overlay de rotación solo en móvil -->
   <style>
     /* Ocultar mensaje de error de compatibilidad */
     #error {
@@ -65,8 +65,8 @@
       display: block !important;
     }
 
-    /* Portrait: mostrar overlay y ocultar contenido */
-    @media (orientation: portrait) {
+    /* Solo en móviles en portrait mostramos overlay y ocultamos contenido */
+    @media (max-width: 600px) and (orientation: portrait) {
       #rotateOverlay {
         display: flex !important;
       }
@@ -74,8 +74,9 @@
         visibility: hidden !important;
       }
     }
-    /* Landscape: ocultar overlay y mostrar contenido */
-    @media (orientation: landscape) {
+
+    /* Solo en móviles en landscape ocultamos overlay y mostramos contenido */
+    @media (max-width: 600px) and (orientation: landscape) {
       #rotateOverlay {
         display: none !important;
       }
@@ -111,11 +112,11 @@
 </head>
 
 <body>
-  <!-- Overlay que indica rotar el móvil -->
+  <!-- Overlay que indica rotar el móvil (solo en mobile portrait) -->
   <div id="rotateOverlay">
     <div id="rotateMessage">
       <p>📱</p>
-      <p>Para una mejor experiencia en este contenido, por favor gira tu dispositivo <strong>horizontalmente</strong>.</p>
+      <p>Para una mejor experiencia, por favor gira tu dispositivo <strong>horizontalmente</strong>.</p>
     </div>
   </div>
 
@@ -150,7 +151,7 @@
           </span>
         </div>
       </div>
-      <!-- Canvas responsivo con altura limitada -->
+      <!-- Canvas responsivo con altura limitada en móvil -->
       <canvas id="canvas" width="1100" height="680"></canvas>
     </div>
   </div>
