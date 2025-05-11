@@ -14,7 +14,7 @@
   <link rel="stylesheet"
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-  <!-- Overrides y estilos de overlay de rotación solo en móvil -->
+  <!-- Overrides y estilos de overlay de rotación -->
   <style>
     /* Ocultar mensaje de error de compatibilidad */
     #error {
@@ -49,13 +49,15 @@
       margin: 0 auto !important;
       padding: 0 10px !important;
       display: block !important;
-      visibility: visible !important;
     }
-    /* Asegurar visibilidad de texto */
-    #text, #code {
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
+
+    /* Sólo en desktop forzamos el texto visible (no rompe animaciones en móvil) */
+    @media (min-width: 601px) {
+      #text, #code {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
     }
 
     /* Canvas escalable */
@@ -65,7 +67,7 @@
       display: block !important;
     }
 
-    /* Solo en móviles en portrait mostramos overlay y ocultamos contenido */
+    /* Sólo en móvil portrait: mostrar overlay y ocultar contenido */
     @media (max-width: 600px) and (orientation: portrait) {
       #rotateOverlay {
         display: flex !important;
@@ -74,8 +76,7 @@
         visibility: hidden !important;
       }
     }
-
-    /* Solo en móviles en landscape ocultamos overlay y mostramos contenido */
+    /* Sólo en móvil landscape: ocultar overlay y mostrar contenido */
     @media (max-width: 600px) and (orientation: landscape) {
       #rotateOverlay {
         display: none !important;
@@ -112,7 +113,7 @@
 </head>
 
 <body>
-  <!-- Overlay que indica rotar el móvil (solo en mobile portrait) -->
+  <!-- Overlay que indica rotar el móvil (sólo en móvil portrait) -->
   <div id="rotateOverlay">
     <div id="rotateMessage">
       <p>📱</p>
@@ -151,7 +152,7 @@
           </span>
         </div>
       </div>
-      <!-- Canvas responsivo con altura limitada en móvil -->
+      <!-- Canvas responsivo con altura limitada -->
       <canvas id="canvas" width="1100" height="680"></canvas>
     </div>
   </div>
