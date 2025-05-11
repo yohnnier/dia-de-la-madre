@@ -10,17 +10,38 @@
         href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
   <meta name="language" content="es-ES">
 
-  <!-- Tu CSS externo -->
+  <!-- CSS externo -->
   <link rel="stylesheet"
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-  <!-- Overrides para hacerlo totalmente responsive -->
+  <!-- Overrides y estilos de overlay de rotación -->
   <style>
-    /* Ocultar mensaje de error */
+    /* Ocultar mensaje de error de compatibilidad */
     #error {
       display: none !important;
     }
-    /* Contenedor fluido y visible */
+
+    /* Overlay que pide girar el dispositivo */
+    #rotateOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(255,255,255,0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 9999;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+    #rotateOverlay p {
+      margin: .5em 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    /* Contenedor principal */
     #wrap {
       position: relative !important;
       width: 100% !important;
@@ -30,26 +51,45 @@
       display: block !important;
       visibility: visible !important;
     }
-    /* Asegurar que el texto se muestre */
+    /* Asegurar visibilidad de texto */
     #text, #code {
       display: block !important;
       visibility: visible !important;
       opacity: 1 !important;
     }
-    /* Canvas escalable por defecto */
+
+    /* Canvas escalable */
     canvas {
       width: 100% !important;
       height: auto !important;
       display: block !important;
     }
+
+    /* Portrait: mostrar overlay y ocultar contenido */
+    @media (orientation: portrait) {
+      #rotateOverlay {
+        display: flex !important;
+      }
+      #main {
+        visibility: hidden !important;
+      }
+    }
+    /* Landscape: ocultar overlay y mostrar contenido */
+    @media (orientation: landscape) {
+      #rotateOverlay {
+        display: none !important;
+      }
+      #main {
+        visibility: visible !important;
+      }
+    }
+
     /* Ajustes específicos para pantallas pequeñas */
     @media (max-width: 600px) {
-      /* Texto más legible en móvil */
       #code {
         font-size: 0.9em !important;
         line-height: 1.3 !important;
       }
-      /* Limitar altura del canvas al 70% del viewport */
       canvas {
         max-height: 70vh !important;
       }
@@ -71,6 +111,15 @@
 </head>
 
 <body>
+  <!-- Overlay que indica rotar el móvil -->
+  <div id="rotateOverlay">
+    <div id="rotateMessage">
+      <p>📱</p>
+      <p>Para una mejor experiencia en este contenido, por favor gira tu dispositivo <strong>horizontalmente</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
   <div id="main">
     <div id="wrap">
       <div id="text">
@@ -101,11 +150,12 @@
           </span>
         </div>
       </div>
-      <!-- Canvas responsivo con altura limitada en móvil -->
+      <!-- Canvas responsivo con altura limitada -->
       <canvas id="canvas" width="1100" height="680"></canvas>
     </div>
   </div>
 
+  <!-- Audio y script de reproducción -->
   <audio preload="auto" id="media"
          src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3"
          loop></audio>
