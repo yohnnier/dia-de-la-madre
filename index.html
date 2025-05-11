@@ -15,14 +15,6 @@
         href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
   <style>
-    /* Estilos generales */
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-    
     /* Oculta mensaje de navegador no compatible */
     #error {
       display: none !important;
@@ -31,13 +23,12 @@
     /* Overlay que pide girar el dispositivo (portrait móvil) */
     #rotateOverlay {
       position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
+      width: 100vw; height: 100vh;
       background: rgba(255,255,255,0.95);
       display: none;
       align-items: center; justify-content: center;
-      flex-direction: column;
       text-align: center;
-      z-index: 10000;
+      z-index: 9999;
       padding: 1em; box-sizing: border-box;
     }
     #rotateOverlay p {
@@ -47,57 +38,52 @@
     /* Overlay que invita al usuario a tocar para iniciar (landscape móvil) */
     #clickOverlay {
       position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7); /* Oscurecido para mejor visibilidad */
       display: none;
       align-items: center; justify-content: center;
-      flex-direction: column;
       text-align: center;
-      z-index: 10000;
+      z-index: 9998;
       color: #fff;
       font-family: sans-serif;
-      cursor: pointer;
+      cursor: pointer; /* Indica que es clickeable */
     }
     #clickOverlay p {
-      margin: .5em 0; font-size: 1.5em;
+      margin: .3em 0; font-size: 1.5em; /* Texto más grande */
     }
-    #clickOverlay .emoji {
-      font-size: 3em;
-      margin-bottom: 10px;
+    #clickOverlay div {
+      background: rgba(255,255,255,0.2);
+      padding: 20px; border-radius: 10px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Portrait móvil: mostrar rotateOverlay */
+    @media (max-width: 600px) and (orientation: portrait) {
+      #rotateOverlay { display: flex; }
+      #clickOverlay { display: none; }
     }
 
     /* Contenedor fluido */
     #wrap {
-      position: relative;
-      width: 100%; max-width: 1100px;
-      margin: 0 auto; padding: 0 10px;
-      box-sizing: border-box;
+      position: relative !important;
+      width: 100% !important; max-width: 1100px !important;
+      margin: 0 auto !important; padding: 0 10px !important;
     }
 
     /* Canvas escalable con límite de altura en móvil */
     canvas {
-      width: 100%; height: auto;
-      display: block; max-height: 80vh;
+      width: 100% !important; height: auto !important;
+      display: block !important; max-height: 70vh !important;
     }
 
     /* Tipografía móvil */
     @media (max-width: 600px) {
-      #code { font-size: 0.9em; line-height: 1.3; }
-    }
-    
-    /* Botón para audio */
-    #audioControl {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 1000;
-      display: none;
+      #code { font-size: 0.9em !important; line-height: 1.3 !important; }
     }
   </style>
 
@@ -109,25 +95,28 @@
   <script src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
   <script src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
   <script src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js"
+          charset="utf-8"></script>
+  <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js"
+          charset="utf-8"></script>
 </head>
 
 <body>
   <!-- Overlay de rotación móvil -->
   <div id="rotateOverlay">
-    <p>📱</p>
-    <p>Para una mejor experiencia, gira tu dispositivo <strong>horizontalmente</strong>.</p>
+    <div>
+      <p>📱</p>
+      <p>Para una mejor experiencia, gira tu dispositivo <strong>horizontalmente</strong>.</p>
+    </div>
   </div>
 
   <!-- Overlay de "clic para iniciar" -->
   <div id="clickOverlay">
-    <div class="emoji">👇</div>
-    <p>Toca aquí para iniciar</p>
+    <div>
+      <p>👆</p>
+      <p>Toca aquí para iniciar</p>
+    </div>
   </div>
-
-  <!-- Botón para controlar audio -->
-  <button id="audioControl">🔇 Audio</button>
 
   <!-- Contenido principal -->
   <div id="main">
@@ -156,152 +145,143 @@
          loop></audio>
 
   <script>
-    // Esperar a que el DOM esté listo
-    document.addEventListener('DOMContentLoaded', function() {
-      // Elementos DOM
-      var body = document.body;
-      var audio = document.getElementById('media');
-      var canvas = document.getElementById('canvas');
-      var clickOverlay = document.getElementById('clickOverlay');
-      var rotateOverlay = document.getElementById('rotateOverlay');
-      var audioControl = document.getElementById('audioControl');
-      var hasTouchScreen = false;
-      var animationStarted = false;
-      
-      // Comprobar si el dispositivo tiene pantalla táctil
-      if ('maxTouchPoints' in navigator) {
-        hasTouchScreen = navigator.maxTouchPoints > 0;
-      } else if ('msMaxTouchPoints' in navigator) {
-        hasTouchScreen = navigator.msMaxTouchPoints > 0;
-      } else {
-        var mQ = window.matchMedia && matchMedia('(pointer:coarse)');
-        if (mQ && mQ.media === '(pointer:coarse)') {
-          hasTouchScreen = !!mQ.matches;
-        } else if ('orientation' in window) {
-          hasTouchScreen = true; // Deprecated, but good fallback
-        }
-      }
-      
-      // Función para intentar reproducir audio
-      function playAudio() {
-        if (audio.paused) {
-          audio.play().then(function() {
-            audioControl.textContent = '🔊 Audio';
-            audioControl.style.display = 'block';
-          }).catch(function(err) {
-            console.log("Reproducción de audio fallida:", err);
-            audioControl.style.display = 'block';
-          });
-        }
-      }
-      
-      // Función para iniciar la animación
-      function startAnimation() {
-        if (!animationStarted) {
-          animationStarted = true;
+    // Variables globales
+    var audio, canvas, clickOverlay, rotateOverlay;
+    var animationStarted = false;
+    
+    // Función que determina si estamos en móvil
+    function isMobile() {
+      return window.matchMedia("(max-width: 600px)").matches;
+    }
+    
+    // Función que determina si estamos en orientación landscape
+    function isLandscape() {
+      return window.matchMedia("(orientation: landscape)").matches;
+    }
+    
+    // Función para comprobar y actualizar los overlays según la orientación
+    function updateOverlays() {
+      // Solo hacer esto para dispositivos móviles
+      if (isMobile()) {
+        if (isLandscape()) {
+          // En landscape móvil
+          rotateOverlay.style.display = "none";
           
-          // En dispositivos móviles, forzar un click en el canvas
-          if (hasTouchScreen) {
-            // Ocultar todos los overlays
-            clickOverlay.style.display = 'none';
-            rotateOverlay.style.display = 'none';
-            
-            // Hacer visible el canvas y otros elementos
-            document.getElementById('main').style.visibility = 'visible';
-            canvas.style.visibility = 'visible';
-            
-            // Intentar reproducir audio
-            playAudio();
-            
-            // Simular un clic en el canvas para iniciar la animación
-            // Esto es importante para activar el script love.js
-            setTimeout(function() {
-              var evt = new MouseEvent('click', {
-                bubbles: true,
-                cancelable: true,
-                view: window
-              });
-              canvas.dispatchEvent(evt);
-            }, 100);
-          }
-        }
-      }
-      
-      // Función para verificar la orientación y mostrar el overlay adecuado
-      function checkOrientation() {
-        if (hasTouchScreen) {
-          var isPortrait = window.innerHeight > window.innerWidth;
-          
-          if (isPortrait) {
-            // Dispositivo en vertical - mostrar aviso para girar
-            rotateOverlay.style.display = 'flex';
-            clickOverlay.style.display = 'none';
-            document.getElementById('main').style.visibility = 'hidden';
+          // Solo mostrar clickOverlay si la animación no ha comenzado
+          if (!animationStarted) {
+            clickOverlay.style.display = "flex";
           } else {
-            // Dispositivo en horizontal - ocultar aviso, mostrar Click Here si no se inició animación
-            rotateOverlay.style.display = 'none';
-            
-            if (!animationStarted) {
-              clickOverlay.style.display = 'flex';
-              document.getElementById('main').style.visibility = 'hidden';
-            } else {
-              clickOverlay.style.display = 'none';
-              document.getElementById('main').style.visibility = 'visible';
-            }
+            clickOverlay.style.display = "none";
           }
         } else {
-          // No es dispositivo táctil, ocultar overlays
-          rotateOverlay.style.display = 'none';
-          clickOverlay.style.display = 'none';
-          document.getElementById('main').style.visibility = 'visible';
+          // En portrait móvil
+          rotateOverlay.style.display = "flex";
+          clickOverlay.style.display = "none";
+        }
+      } else {
+        // En escritorio, ocultar ambos overlays
+        rotateOverlay.style.display = "none";
+        clickOverlay.style.display = "none";
+      }
+    }
+    
+    // Iniciar reproducción de audio de manera forzada (requiere interacción del usuario)
+    function playAudio() {
+      if (audio && audio.paused) {
+        audio.play().catch(function(err) {
+          console.log("Reproducción de audio fallida:", err);
+          // Si falla el autoplay, mostrar controles como fallback
+          audio.controls = true;
+        });
+      }
+    }
+    
+    // Función para iniciar la animación
+    function startAnimation() {
+      animationStarted = true;
+      
+      // Asegurarse de que el canvas sea visible
+      if (canvas) {
+        canvas.style.visibility = "visible";
+        
+        // Disparar evento de clic en el canvas para iniciar la animación
+        // Este es un evento simulado para activar cualquier listener en el canvas
+        var clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        canvas.dispatchEvent(clickEvent);
+        
+        // También intenta llamar a cualquier función de inicio directamente
+        // (en caso de que el script no use event listeners)
+        if (typeof startHeartAnimation === 'function') {
+          startHeartAnimation();
+        }
+        
+        // Intenta iniciar el audio
+        playAudio();
+        
+        // Ocultar el overlay de clic una vez iniciada la animación
+        if (clickOverlay) {
+          clickOverlay.style.display = "none";
         }
       }
+    }
+    
+    // Función principal que se ejecuta cuando el DOM está listo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar referencias
+      audio = document.getElementById('media');
+      canvas = document.getElementById('canvas');
+      clickOverlay = document.getElementById('clickOverlay');
+      rotateOverlay = document.getElementById('rotateOverlay');
       
-      // Comprobar orientación inicial
-      checkOrientation();
+      // Asegurarse de que el canvas sea visible
+      if (canvas) {
+        canvas.style.visibility = "visible";
+      }
       
-      // Eventos para detectar cambios de orientación
+      // Verificar orientación al cargar
+      updateOverlays();
+      
+      // Escuchar cambios de orientación
       window.addEventListener('orientationchange', function() {
-        // Esperar un momento para que se complete el giro
-        setTimeout(checkOrientation, 300);
+        // Pequeño retraso para asegurarnos de que el cambio de orientación se complete
+        setTimeout(updateOverlays, 500);
       });
       
-      window.addEventListener('resize', function() {
-        setTimeout(checkOrientation, 300);
-      });
+      // También escuchar cambios de tamaño de ventana
+      window.addEventListener('resize', updateOverlays);
       
-      // Evento para iniciar cuando se hace clic en el overlay
-      clickOverlay.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        startAnimation();
-      });
+      // Manejar clic en el overlay
+      if (clickOverlay) {
+        clickOverlay.addEventListener('click', function() {
+          startAnimation();
+        });
+      }
       
-      // Evento para el botón de audio
-      audioControl.addEventListener('click', function() {
-        if (audio.paused) {
-          audio.play();
-          this.textContent = '🔊 Audio';
-        } else {
-          audio.pause();
-          this.textContent = '🔇 Audio';
+      // Intentar reproducir el audio automáticamente después de un tiempo
+      setTimeout(playAudio, 2000);
+      
+      // Hack adicional para asegurarnos de que después de 1 segundo verificamos 
+      // si estamos en landscape y mostramos el overlay si es necesario
+      setTimeout(function() {
+        if (isMobile() && isLandscape() && !animationStarted) {
+          clickOverlay.style.display = "flex";
         }
-      });
-      
-      // Si no es un dispositivo móvil, iniciar automáticamente
-      if (!hasTouchScreen) {
-        // Esperar un segundo e iniciar automáticamente
-        setTimeout(function() {
-          // Simular clic en el canvas para iniciar animación
-          canvas.dispatchEvent(new MouseEvent('click', {
-            bubbles: true,
-            cancelable: true,
-            view: window
-          }));
-          
-          // Iniciar audio
-          playAudio();
-        }, 1000);
+      }, 1000);
+    });
+    
+    // Hack para garantizar que el overlay aparezca en landscape móvil incluso si la página ya está cargada
+    window.addEventListener('load', function() {
+      if (typeof isMobile === 'function' && typeof isLandscape === 'function') {
+        if (isMobile() && isLandscape()) {
+          var clickOverlay = document.getElementById('clickOverlay');
+          if (clickOverlay && !animationStarted) {
+            clickOverlay.style.display = "flex";
+          }
+        }
       }
     });
   </script>
