@@ -42,16 +42,18 @@
       #clickOverlay { display:none !important; }
       #main { visibility:hidden !important; }
     }
-    /* Mobile landscape */
+    /* Mobile landscape: hide #text until user clicks */
     @media(max-width:600px) and (orientation:landscape) {
       #rotateOverlay { display:none !important; }
       #clickOverlay { display:flex !important; }
       #main { visibility:visible !important; }
+      #text { display:none !important; }
     }
     /* Desktop */
     @media(min-width:601px) {
       #rotateOverlay, #clickOverlay { display:none !important; }
       #main { visibility:visible !important; }
+      #text { display:block !important; }
     }
 
     /* Ajustes tipográficos en móvil */
@@ -104,6 +106,7 @@
       var overlayRotate = document.getElementById('rotateOverlay');
       var overlayClick = document.getElementById('clickOverlay');
       var main = document.getElementById('main');
+      var text = document.getElementById('text');
       var canvas = document.getElementById('canvas');
       var media = document.getElementById('media');
 
@@ -123,10 +126,12 @@
           overlayRotate.style.display = 'none';
           overlayClick.style.display = 'flex';
           main.style.visibility = 'visible';
+          text.style.display = 'none';
         } else {
           overlayRotate.style.display = 'none';
           overlayClick.style.display = 'none';
           main.style.visibility = 'visible';
+          text.style.display = 'block';
         }
       }
 
@@ -134,9 +139,11 @@
       window.addEventListener('resize', updateOverlay);
       window.addEventListener('orientationchange', updateOverlay);
 
-      // On click overlay click, hide and trigger canvas click
+      // On click overlay click, hide, reveal text and trigger canvas click
       overlayClick.addEventListener('click', function() {
         overlayClick.style.display = 'none';
+        text.style.display = 'block';
+        // Start animation by simulating canvas click
         canvas.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       });
     });
