@@ -1,149 +1,163 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <!-- Meta viewport para móviles -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Love You by AlexDev</title>
-  <link rel="icon" type="image/x-icon" href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
+    <meta charset="UTF-8">
+    <!-- Meta viewport para móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love You by Yohnnier</title>
+    <link rel="icon" type="image/x-icon" href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
+    <meta name="language" content="es-ES">
+    <meta name="title" content="title">
 
-  <!-- CSS externo -->
-  <link rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
 
-  <!-- Overrides y estilos para overlays -->
-  <style>
-    /* Ocultar mensaje de error */
-    #error { display: none !important; }
+    <!-- Overrides para overlay de rotación -->
+    <style>
+      /* Overlay para pedir girar el dispositivo */
+      #rotateOverlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: rgba(255,255,255,0.95);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        z-index: 10000;
+        padding: 1em;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+      #rotateOverlay p {
+        margin: .5em 0;
+        font-size: 1.2em;
+        color: #333;
+      }
 
-    /* Overlay girar dispositivo */
-    #rotateOverlay {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(255,255,255,0.95);
-      display: none; align-items: center; justify-content: center;
-      text-align: center; z-index: 10000; padding: 1em; box-sizing: border-box;
-    }
-    #rotateOverlay p { margin: .5em 0; font-size: 1.2em; color: #333; }
-
-    /* Overlay "Click aquí" */
-    #clickOverlay {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.6);
-      display: none; align-items: center; justify-content: center;
-      text-align: center; z-index: 10001; color: #fff;
-      padding: 1em; box-sizing: border-box;
-      font-family: sans-serif;
-      flex-direction: column;
-    }
-    #clickOverlay p { margin: .3em 0; font-size: 1.2em; }
-
-    /* Contenedor fluido */
-    #wrap { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 10px; }
-    canvas { width: 100%; height: auto; display: block; }
-
-    /* Ajustes en móvil */
-    @media (max-width: 600px) {
-      #code { font-size: 0.9em !important; line-height: 1.3 !important; }
-    }
-
-    /* Portrait móvil: mostrar rotateOverlay, ocultar contenido principal */
-    @media (max-width: 600px) and (orientation: portrait) {
-      #rotateOverlay { display: flex !important; }
-      #clickOverlay { display: none !important; }
-      #main { visibility: hidden !important; }
-    }
-
-    /* Landscape móvil: mostrar clickOverlay, ocultar rotateOverlay */
-    @media (max-width: 600px) and (orientation: landscape) {
-      #rotateOverlay { display: none !important; }
-      #clickOverlay { display: flex !important; }
-      #main { visibility: visible !important; }
-    }
-  </style>
-
-  <!-- Scripts externos -->
-  <script src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133675/jscex-jit-8XrVvUaYfxRmka8p22LKdg.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
-  <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
-</head>
-<body>
-  <!-- Overlays -->
-  <div id="rotateOverlay">
-    <p>📱</p>
-    <p>Para una mejor experiencia, gira tu dispositivo horizontalmente.</p>
-  </div>
-  <div id="clickOverlay">
-    <p>👇</p>
-    <p>¡Toca aquí para iniciar!</p>
-  </div>
-
-  <!-- Contenido principal -->
-  <div id="main">
-    <div id="error">Tu navegador no es compatible. Usa Chrome o Firefox.</div>
-    <div id="wrap">
-      <div id="text">
-        <div id="code" style="font-size:0.75em; line-height:1.2;">
-          <span class="say">En este Día de la Madre queremos rendir homenaje a esas mujeres extraordinarias que, con su uniforme azul y su corazón, transforman el cuidado en un acto de amor infinito.</span><br><br>
-          <!-- ... resto del texto ... -->
-          <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
-          <span class="say" style="font-size:1.2em; font-weight:bold;">ASENF OVALLE</span><br>
-          <span class="say" style="font-size:0.8em; font-style:italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
-        </div>
-      </div>
-      <canvas id="canvas" width="1100" height="680"></canvas>
-    </div>
-  </div>
-
-  <!-- Audio y control JS -->
-  <audio preload="auto" id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop></audio>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var audio       = document.getElementById('media');
-      var canvas      = document.getElementById('canvas');
-      var rotateO     = document.getElementById('rotateOverlay');
-      var clickO      = document.getElementById('clickOverlay');
-
-      // Reproducir audio tras 2s
-      setTimeout(function() {
-        audio.play().catch(function(){ audio.controls = true; });
-      }, 2000);
-
-      // Mostrar overlays según orientación/móvil
-      function updateUI() {
-        var isMobile    = window.innerWidth <= 600;
-        var isPortrait  = window.innerHeight > window.innerWidth;
-        if (isMobile && isPortrait) {
-          rotateO.style.display = 'flex';
-          clickO.style.display  = 'none';
-          document.getElementById('main').style.visibility = 'hidden';
-        } else if (isMobile && !isPortrait) {
-          rotateO.style.display = 'none';
-          clickO.style.display  = 'flex';
-          document.getElementById('main').style.visibility = 'visible';
-        } else {
-          rotateO.style.display = 'none';
-          clickO.style.display  = 'none';
-          document.getElementById('main').style.visibility = 'visible';
+      /* Portrait móvil: mostrar overlay y ocultar contenido principal */
+      @media (max-width: 600px) and (orientation: portrait) {
+        #rotateOverlay {
+          display: flex !important;
+        }
+        #main {
+          visibility: hidden !important;
         }
       }
 
-      updateUI();
-      window.addEventListener('resize', updateUI);
-      window.addEventListener('orientationchange', updateUI);
+      /* Landscape móvil: ocultar overlay y mostrar contenido */
+      @media (max-width: 600px) and (orientation: landscape) {
+        #rotateOverlay {
+          display: none !important;
+        }
+        #main {
+          visibility: visible !important;
+        }
+      }
 
-      // Al tocar overlay de click, ocultar y disparar animación
-      clickO.addEventListener('click', function() {
-        clickO.style.display = 'none';
-        canvas.dispatchEvent(new MouseEvent('click', { bubbles:true }));
-      });
+      /* Desktop: asegurar overlay oculto */
+      @media (min-width: 601px) {
+        #rotateOverlay {
+          display: none !important;
+        }
+        #main {
+          visibility: visible !important;
+        }
+      }
+
+      /* Ajustes responsivos existentes */
+      #wrap {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 10px;
+      }
+      canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      @media (max-width: 600px) {
+        #code {
+          font-size: 0.9em !important;
+          line-height: 1.3 !important;
+        }
+      }
+    </style>
+
+    <!-- Scripts externos -->
+    <script src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133675/jscex-jit-8XrVvUaYfxRmka8p22LKdg.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
+    <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <!-- Overlay para pedir rotación en móvil -->
+    <div id="rotateOverlay">
+      <p>📱</p>
+      <p>Para una mejor experiencia, gira tu dispositivo horizontalmente.</p>
+    </div>
+
+    <div id="main">
+        <div id="error">
+            Tu navegador que estás usando no es compatible con el contenido que se va a mostrar.
+            Por favor, usa Google (<a href="http://www.google.cn/chrome">Chrome</a>)
+            o Firefox (<a href="http://firefox.com.cn/download/">Firefox</a>).
+        </div>
+
+        <div id="wrap">
+            <div id="text">
+                <div id="code" style="font-size: 0.75em; line-height: 1.2em;">
+                    <span class="say">En este Día de la Madre queremos rendir homenaje a esas mujeres extraordinarias que, con su uniforme azul y su corazón, transforman el cuidado en un acto de amor infinito.</span><br><br>
+                    <span class="say">A ti, mamá enfermera, que velas por nuestros pacientes en las noches más largas y, al volver a casa, arrullas a tus hijos con la misma ternura con que tomas sus manos.</span><br>
+                    <span class="say">Tu fortaleza es un faro de esperanza: soportas turnos agotadores, secas lágrimas, das consuelo y, al mismo tiempo, cocinas sueños para tu familia.</span><br>
+                    <span class="say">Eres la voz que susurra "todo estará bien" en un pasillo de hospital y el abrazo que cobija a quienes te esperan al llegar.</span><br>
+                    <span class="say">Gracias por regalarnos cada latido de tu entrega y enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
+                    <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita capacidad de amar.</span><br>
+                    <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
+                    <span class="say">— ¡Te amamos!</span><br><br>
+                    <span class="say" style="font-size: 1.2em; font-weight: bold;">ASENF OVALLE</span><br>
+                    <span class="say" style="font-size: 0.8em; font-style: italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
+                </div>
+            </div>
+            <canvas id="canvas" width="1100" height="680"></canvas>
+        </div>
+    </div>
+
+    <audio preload="auto" id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop></audio>
+    <script src="https://cdn1.site-media.eu/images/0/16133660/script-4FFlAvQJ79P1MYTvraJpeg.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var audio = document.getElementById('media');
+        setTimeout(function() {
+            audio.play().catch(function() { audio.controls = true; });
+        }, 2000);
+
+        function handleOrientation() {
+            var isMobile    = window.innerWidth <= 600;
+            var isPortrait  = window.innerHeight > window.innerWidth;
+            var overlay     = document.getElementById('rotateOverlay');
+            var main        = document.getElementById('main');
+
+            if (isMobile && isPortrait) {
+                overlay.style.display    = 'flex';
+                main.style.visibility    = 'hidden';
+            } else {
+                overlay.style.display    = 'none';
+                main.style.visibility    = 'visible';
+            }
+        }
+
+        handleOrientation();
+        window.addEventListener('resize', handleOrientation);
+        window.addEventListener('orientationchange', handleOrientation);
     });
-  </script>
+    </script>
 </body>
 </html>
