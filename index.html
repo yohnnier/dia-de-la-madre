@@ -1,53 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <!-- Meta viewport para móviles -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Love You by AlexDev</title>
     <link rel="icon" type="image/x-icon" href="https://cdn1.site-media.eu/images/0/16133687/icon-iY273linX_tpHWWdiFg2FQ.png">
     <meta name="language" content="es-ES">
     <meta name="title" content="title">
-
-    <!-- CSS externo -->
-    <link rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
-
-    <!-- Overrides para hacerlo responsive -->
-    <style>
-      /* Contenedor fluido */
-      #wrap {
-        width: 100%;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 10px;
-      }
-
-      /* Canvas escalable */
-      canvas {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      /* Ajustes en pantallas pequeñas */
-      @media (max-width: 600px) {
-        #code {
-          font-size: 0.9em !important;
-          line-height: 1.3 !important;
-        }
-    }
-    </style>
-
-    <!-- Scripts externos -->
-    <script src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133675/jscex-jit-8XrVvUaYfxRmka8p22LKdg.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
-    <script src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn1.site-media.eu/images/0/16133666/default-TEWH2-zVvPehy8lVeLfJsA.css">
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133685/jquery.min-GcJNxTC20mopSDmtyQgvxg.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133684/jscex.min-8DEu3mcVF-IQOoAFF85AVg.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133672/jscex-parser-gMKKoMN_1Buvjqyae1gXug.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133675/jscex-jit-8XrVvUaYfxRmka8p22LKdg.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133678/jscex-builderbase.min-uYtL6J5-UFgKWi5DgA1xeA.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133682/jscex-async.min-T99yY7cMSVFY69Y7Qr-jOQ.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133681/jscex-async-powerpack.min-LShzfWY7Bht0u-pQsj1svQ.js"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133690/functions-yTfYUz53kfqph0J-VyuNng.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://cdn1.site-media.eu/images/0/16133670/love-wQCNCoDk8xb7ps6MWPcVHw.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -68,28 +36,32 @@
                     <span class="say">Gracias por regalarnos cada latido de tu entrega y enseñarnos que el verdadero arte de cuidar nace del corazón.</span><br>
                     <span class="say">Hoy celebramos tu pasión, tu coraje y tu infinita capacidad de amar.</span><br>
                     <span class="say">¡Feliz Día de la Madre, heroína de dos mundos!</span><br><br>
-                    <span class="say">  — ¡Te amamos!</span><br><br>
+                    <span class="say"><span class="space"></span> — ¡Te amamos!</span><br><br>
                     <span class="say" style="font-size: 1.2em; font-weight: bold;">ASENF OVALLE</span><br>
                     <span class="say" style="font-size: 0.8em; font-style: italic;">Programación y diseño: Enf. Yohnnier Gomez</span>
                 </div>
             </div>
-            <!-- Canvas responsivo -->
+            <!-- Clock section removed as requested -->
+
             <canvas id="canvas" width="1100" height="680"></canvas>
         </div>
     </div>
 
-    <audio preload="auto" id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop></audio>
-
+    <audio preload="auto" id="media" src="https://cdn1.site-media.eu/images/0/16133854/0510-jcsqMinMWl6vMW56XD2W9A.MP3" loop="loop"></audio>
     <script src="https://cdn1.site-media.eu/images/0/16133660/script-4FFlAvQJ79P1MYTvraJpeg.js"></script>
     <script>
+    // Script para sincronizar el audio con la animación
     document.addEventListener('DOMContentLoaded', function() {
+        // Esperar un momento para que la animación comience
         setTimeout(function() {
+            // Obtener el elemento de audio y reproducirlo
             var audio = document.getElementById('media');
             audio.play().catch(function(error) {
-                console.log("Reproducción automática bloqueada:", error);
+                console.log("Reproducción automática bloqueada: ", error);
+                // Añadir controles si la reproducción automática es bloqueada
                 audio.controls = true;
             });
-        }, 2000);
+        }, 2000); // Esperar 2 segundos después de que la página cargue
     });
     </script>
 </body>
